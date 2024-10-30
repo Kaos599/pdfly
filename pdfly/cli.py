@@ -12,6 +12,7 @@ from typing_extensions import Annotated
 
 import pdfly.cat
 import pdfly.compress
+import pdfly.uncompress
 import pdfly.extract_images
 import pdfly.metadata
 import pdfly.pagemeta
@@ -226,7 +227,28 @@ def compress(
     ],
 ) -> None:
     pdfly.compress.main(pdf, output)
-
+@app.command(name="uncompress", help="Uncompress a PDF.")  
+def uncompress(
+    pdf: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            writable=False,
+            readable=True,
+            resolve_path=True,
+        ),
+    ],
+    output: Annotated[
+        Path,
+        typer.Argument(
+            file_okay=True,  
+            writable=True,
+        ),
+    ],
+) -> None:
+    pdfly.uncompress.main(pdf, output)
 
 @entry_point.command(name="x2pdf", help=pdfly.x2pdf.__doc__)  # type: ignore[misc]
 def x2pdf(
