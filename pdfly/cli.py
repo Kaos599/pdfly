@@ -12,14 +12,13 @@ from typing_extensions import Annotated
 
 import pdfly.cat
 import pdfly.compress
-import pdfly.uncompress
 import pdfly.extract_images
 import pdfly.metadata
 import pdfly.pagemeta
 import pdfly.rm
 import pdfly.up2
 import pdfly.x2pdf
-
+import pdfly.uncompress
 
 def version_callback(value: bool) -> None:
     import pypdf
