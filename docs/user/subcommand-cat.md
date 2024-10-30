@@ -36,29 +36,19 @@ pdfly cat --help
     1:10:2    1 3 5 7 9
     2::-1     2 1 0.
     ::-1      all  pages in reverse order.
-```
 
-### Note: For negative page numbers, use the -- option before the number:
-
-```bash
-
-pdfly cat resources/GeoBase_NHNC1_Data_Model_UML_EN.pdf -o geo.pdf -- -1
-```
 
  Examples
-  
-    pdfly cat resources/GeoBase_NHNC1_Data_Model_UML_EN.pdf -o geo.pdf -- -1
+      pdfly cat -o output.pdf head.pdf content.pdf :6 7: tail.pdf -1
         Concatenate all of head.pdf, all but page seven of content.pdf,
         and the last page of tail.pdf, producing output.pdf.
 
     pdfly cat chapter*.pdf >book.pdf
-
         You can specify the output file by redirection.
 
     pdfly cat chapter?.pdf chapter10.pdf >book.pdf
-
         In case you don't want chapter 10 before chapter 2.
-```
+
 ╭─ Arguments ──────────────────────────────────────────────────────────────────╮
 │ *    filename      PATH         [default: None] [required]                   │
 │ *    fn_pgrgs      FN_PGRGS...  filenames and/or page ranges [default: None] │
