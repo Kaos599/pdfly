@@ -59,7 +59,7 @@ include_trailing_comma = true
 known_third_party = ["pytest", "setuptools"]
 
 [tool.ruff]
-line-length = 79
+line-length = 120
 select = ["ALL"]
 ignore = [
     "D404",  # First word of the docstring should not be "This"
