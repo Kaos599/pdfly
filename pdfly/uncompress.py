@@ -1,11 +1,11 @@
-# uncompress.py
-"""Provides functionality to uncompress PDF files."""
-from pathlib import Path
-import zlib
-from typing import cast
+"""
+Module for uncompressing PDF content streams.
+"""
 
+from pathlib import Path
 from pypdf import PdfReader, PdfWriter
-from pypdf.generic import IndirectObject, StreamObject
+from pypdf.generic import IndirectObject
+import zlib
 
 
 def main(pdf: Path, output: Path) -> None:
@@ -17,16 +17,12 @@ def main(pdf: Path, output: Path) -> None:
             contents = page["/Contents"]
             if isinstance(contents, IndirectObject):
                 contents = contents.get_object()
-                
+            # Handle multiple content streams or single
             if isinstance(contents, list):
-                for content_obj in contents:
-                    if isinstance(content_obj, IndirectObject):
-                        content_stream = content_obj.get_object()
-                        decompress_content_stream(content_stream)
-            elif isinstance(contents, StreamObject): # type: ignore[unreachable]
+                for content in contents:
+                    decompress_content_stream(content)
+            else:
                 decompress_content_stream(contents)
-
-
         writer.add_page(page)
 
     with open(output, "wb") as fp:
@@ -34,17 +30,18 @@ def main(pdf: Path, output: Path) -> None:
 
     orig_size = pdf.stat().st_size
     uncomp_size = output.stat().st_size
-    ratio = uncomp_size / orig_size
+
     print(f"Original Size  : {orig_size:,}")
-    print(f"Uncompressed Size: {uncomp_size:,} ({ratio * 100:.1f}% of original)")
+    print(f"Uncompressed Size: {uncomp_size:,} ({(uncomp_size / orig_size) * 100:.1f}% of original)")
 
 
-def decompress_content_stream(content: StreamObject) -> None:  # type: ignore[type-arg]
+def decompress_content_stream(content: IndirectObject) -> None:
+    """Decompress a content stream if it uses FlateDecode"""
     if content.get("/Filter") == "/FlateDecode":
         try:
             compressed_data = content.get_data()
             uncompressed_data = zlib.decompress(compressed_data)
             content.set_data(uncompressed_data)
-            content.update({"/Filter": None}) # type: ignore[arg-type]
+            del content["/Filter"]  # Remove compression flag
         except zlib.error as e:
             print(f"Decompression error: {e}")
