@@ -1,12 +1,11 @@
-"""
-Module for uncompressing PDF content streams.
-"""
+"""Module for uncompressing PDF content streams."""
 
 from pathlib import Path
 from typing import Optional
+import zlib
+
 from pypdf import PdfReader, PdfWriter
 from pypdf.generic import IndirectObject, PdfObject
-import zlib
 
 
 def main(pdf: Path, output: Path) -> None:
@@ -40,7 +39,7 @@ def main(pdf: Path, output: Path) -> None:
 
 
 def decompress_content_stream(content: IndirectObject) -> None:
-    """Decompress a content stream if it uses FlateDecode"""
+    """Decompress a content stream if it uses FlateDecode."""
     if content.get("/Filter") == "/FlateDecode":
         try:
             compressed_data = content.get_data()
