@@ -32,9 +32,7 @@ def version_callback(value: bool) -> None:
 
 entry_point = typer.Typer(
     add_completion=False,
-    help=(
-        "pdfly is a pure-python cli application for manipulating PDF files."
-    ),
+    help=("pdfly is a pure-python cli application for manipulating PDF files."),
     rich_markup_mode="rich",  # Allows to pretty-print commands documentation
 )
 
@@ -59,7 +57,7 @@ def extract_images(
             readable=True,
             resolve_path=True,
         ),
-    ]
+    ],
 ) -> None:
     pdfly.extract_images.main(pdf)
 
@@ -99,9 +97,7 @@ def cat(
     fn_pgrgs: List[str] = typer.Argument(  # noqa
         ..., help="filenames and/or page ranges"
     ),
-    verbose: bool = typer.Option(
-        False, help="show page ranges as they are being read"
-    ),
+    verbose: bool = typer.Option(False, help="show page ranges as they are being read"),
 ) -> None:
     pdfly.cat.main(filename, fn_pgrgs, output, verbose)
 
@@ -123,9 +119,7 @@ def rm(
     fn_pgrgs: List[str] = typer.Argument(  # noqa
         ..., help="filenames and/or page ranges"
     ),
-    verbose: bool = typer.Option(
-        False, help="show page ranges as they are being read"
-    ),
+    verbose: bool = typer.Option(False, help="show page ranges as they are being read"),
 ) -> None:
     pdfly.rm.main(filename, fn_pgrgs, output, verbose)
 
@@ -195,7 +189,7 @@ def extract_text(
             readable=True,
             resolve_path=True,
         ),
-    ]
+    ],
 ) -> None:
     """Extract text from a PDF file."""
     from pypdf import PdfReader
