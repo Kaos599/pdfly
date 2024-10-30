@@ -12,6 +12,7 @@ from typing_extensions import Annotated
 
 import pdfly.cat
 import pdfly.compress
+import pdfly.uncompress
 import pdfly.extract_images
 import pdfly.metadata
 import pdfly.pagemeta
