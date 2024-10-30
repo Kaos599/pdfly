@@ -227,7 +227,7 @@ def compress(
     ],
 ) -> None:
     pdfly.compress.main(pdf, output)
-@app.command(name="uncompress", help="Uncompress a PDF.")  
+@entry_point.command(name="uncompress", help="Uncompress a PDF.")  
 def uncompress(
     pdf: Annotated[
         Path,
