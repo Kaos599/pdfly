@@ -57,7 +57,7 @@ def extract_images(
             readable=True,
             resolve_path=True,
         ),
-    ]
+    ],
 ) -> None:
     pdfly.extract_images.main(pdf)
 
@@ -170,11 +170,7 @@ def pagemeta(
         show_default=True,
     ),
 ) -> None:
-    pdfly.pagemeta.main(
-        pdf,
-        page_index,
-        output,
-    )
+    pdfly.pagemeta.main(pdf, page_index, output)
 
 
 @entry_point.command(name="extract-text")  # type: ignore[misc]
@@ -189,7 +185,7 @@ def extract_text(
             readable=True,
             resolve_path=True,
         ),
-    ]
+    ],
 ) -> None:
     """Extract text from a PDF file."""
     from pypdf import PdfReader
