@@ -3,8 +3,9 @@ Module for uncompressing PDF content streams.
 """
 
 from pathlib import Path
+from typing import Optional
 from pypdf import PdfReader, PdfWriter
-from pypdf.generic import IndirectObject
+from pypdf.generic import IndirectObject, PdfObject
 import zlib
 
 
@@ -14,15 +15,16 @@ def main(pdf: Path, output: Path) -> None:
 
     for page in reader.pages:
         if "/Contents" in page:
-            contents = page["/Contents"]
+            contents: Optional[PdfObject] = page["/Contents"]
             if isinstance(contents, IndirectObject):
                 contents = contents.get_object()
-            # Handle multiple content streams or single
-            if isinstance(contents, list):
-                for content in contents:
-                    decompress_content_stream(content)
-            else:
-                decompress_content_stream(contents)
+            if contents is not None:
+                if isinstance(contents, list):
+                    for content in contents:
+                        if isinstance(content, IndirectObject):
+                            decompress_content_stream(content)
+                elif isinstance(contents, IndirectObject):
+                    decompress_content_stream(contents)
         writer.add_page(page)
 
     with open(output, "wb") as fp:
@@ -32,9 +34,7 @@ def main(pdf: Path, output: Path) -> None:
     uncomp_size = output.stat().st_size
 
     print(f"Original Size  : {orig_size:,}")
-    print(
-        f"Uncompressed Size: {uncomp_size:,} ({(uncomp_size / orig_size) * 100:.1f}% of original)"
-    )
+    print(f"Uncompressed Size: {uncomp_size:,} ({(uncomp_size / orig_size) * 100:.1f}% of original)")
 
 
 def decompress_content_stream(content: IndirectObject) -> None:
